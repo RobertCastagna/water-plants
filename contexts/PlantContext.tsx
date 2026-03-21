@@ -282,6 +282,18 @@ export const [PlantProvider, usePlants] = createContextHook(() => {
       .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
   }, [logs]);
 
+  const resetAllData = useCallback(async () => {
+    console.log('[PlantContext] Resetting all data');
+    try {
+      await AsyncStorage.multiRemove([PLANTS_STORAGE_KEY, LOGS_STORAGE_KEY, SETTINGS_STORAGE_KEY]);
+    } catch (error) {
+      console.error('[PlantContext] Error clearing storage during reset:', error);
+    }
+    queryClient.setQueryData(['plants'], []);
+    queryClient.setQueryData(['wateringLogs'], []);
+    queryClient.setQueryData(['settings'], DEFAULT_SETTINGS);
+  }, [queryClient]);
+
   const categorizedPlants = useMemo(() => {
     const overdue: Plant[] = [];
     const dueToday: Plant[] = [];
@@ -327,6 +339,7 @@ export const [PlantProvider, usePlants] = createContextHook(() => {
     waterPlant,
     updateSettings,
     getPlantLogs,
+    resetAllData,
     requestNotificationPermission,
     scheduleNotifications,
   };
