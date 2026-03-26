@@ -1,35 +1,37 @@
 {
   "project_structure": [
-    ".gitignore",
-    "README.md",
-    "babel.config.js",
-    "app.json",
+    "package-lock.json",
     "evaluation_context.json",
-    "metro.config.js",
-    "tsconfig.json",
-    "bun.lock",
+    ".gitignore",
     "eslint.config.js",
     "package.json",
-    "components/EmptyState.tsx",
-    "components/PlantCard.tsx",
-    "assets/images/adaptive-icon.png",
-    "assets/images/favicon.png",
-    "assets/images/icon.png",
-    "assets/images/splash-icon.png",
+    "tsconfig.json",
+    "babel.config.js",
+    "eas.json",
+    "app.json",
+    "metro.config.js",
+    "README.md",
+    "utils/scheduling.ts",
+    "contexts/PlantContext.tsx",
     "types/plant.ts",
     "constants/colors.ts",
-    "contexts/PlantContext.tsx",
-    "app/_layout.tsx",
-    "app/+not-found.tsx",
-    "app/modal.tsx",
-    "app/+native-intent.tsx",
+    "assets/images/splash-icon.png",
+    "assets/images/icon.png",
+    "assets/images/favicon.png",
+    "assets/images/adaptive-icon.png",
     "app/add-plant.tsx",
-    "app/(tabs)/plants.tsx",
-    "app/(tabs)/index.tsx",
-    "app/(tabs)/settings.tsx",
+    "app/_layout.tsx",
+    "app/+native-intent.tsx",
+    "app/modal.tsx",
+    "app/+not-found.tsx",
     "app/(tabs)/_layout.tsx",
+    "app/(tabs)/plants.tsx",
+    "app/(tabs)/settings.tsx",
+    "app/(tabs)/index.tsx",
     "app/plant/[id].tsx",
-    "utils/scheduling.ts"
+    "eas-hooks/eas-build-pre-install.sh",
+    "components/PlantCard.tsx",
+    "components/EmptyState.tsx"
   ],
   "config_files": {
     "app.json": {
@@ -49,11 +51,15 @@
         },
         "ios": {
           "supportsTablet": false,
-          "bundleIdentifier": "app.rork.water-plants-reminder",
+          "bundleIdentifier": "app.tminus.water-plants-reminder",
           "infoPlist": {
             "NSPhotoLibraryUsageDescription": "Allow $(PRODUCT_NAME) to access your photos",
             "NSCameraUsageDescription": "Allow $(PRODUCT_NAME) to access your camera",
-            "NSMicrophoneUsageDescription": "Allow $(PRODUCT_NAME) to access your microphone"
+            "NSMicrophoneUsageDescription": "Allow $(PRODUCT_NAME) to access your microphone",
+            "ITSAppUsesNonExemptEncryption": false
+          },
+          "entitlements": {
+            "aps-environment": "production"
           }
         },
         "android": {
@@ -66,9 +72,10 @@
             "android.permission.VIBRATE",
             "android.permission.RECEIVE_BOOT_COMPLETED",
             "android.permission.SCHEDULE_EXACT_ALARM",
-            "CAMERA",
-            "READ_EXTERNAL_STORAGE",
-            "WRITE_EXTERNAL_STORAGE"
+            "android.permission.CAMERA",
+            "android.permission.READ_EXTERNAL_STORAGE",
+            "android.permission.WRITE_EXTERNAL_STORAGE",
+            "android.permission.RECORD_AUDIO"
           ]
         },
         "web": {
@@ -86,12 +93,10 @@
           [
             "expo-notifications",
             {
-              "icon": "./local/assets/notification_icon.png",
+              "icon": null,
               "color": "#ffffff",
               "defaultChannel": "default",
-              "sounds": [
-                "./local/assets/notification_sound.wav"
-              ],
+              "sounds": [],
               "enableBackgroundRemoteNotifications": false
             }
           ],
@@ -104,6 +109,15 @@
         ],
         "experiments": {
           "typedRoutes": true
+        },
+        "owner": "robert_castagna",
+        "extra": {
+          "router": {
+            "origin": "https://rork.com/"
+          },
+          "eas": {
+            "projectId": "879e6d0c-a9aa-4107-acc4-374dee68880d"
+          }
         }
       }
     },
@@ -115,13 +129,15 @@
         "start": "bunx rork start -p j2a8nwgdagjqyt2q82gnp --tunnel",
         "start-web": "bunx rork start -p j2a8nwgdagjqyt2q82gnp --web --tunnel",
         "start-web-dev": "DEBUG=expo* bunx rork start -p j2a8nwgdagjqyt2q82gnp --web --tunnel",
-        "lint": "expo lint"
+        "lint": "expo lint",
+        "android": "expo run:android",
+        "ios": "expo run:ios"
       },
       "dependencies": {
         "@expo/vector-icons": "^15.0.3",
         "@nkzw/create-context-hook": "^1.1.0",
         "@react-native-async-storage/async-storage": "2.2.0",
-        "@rork-ai/toolkit-sdk": "^0.2.51",
+        "@rork-ai/toolkit-sdk": "0.2.54",
         "@stardazed/streams-text-encoding": "^1.0.2",
         "@tanstack/react-query": "^5.83.0",
         "@ungap/structured-clone": "^1.3.0",
@@ -142,7 +158,7 @@
         "expo-symbols": "~1.0.8",
         "expo-system-ui": "~6.0.9",
         "expo-web-browser": "~15.0.10",
-        "lucide-react-native": "^0.475.0",
+        "lucide-react-native": "0.577.0",
         "react": "19.1.0",
         "react-dom": "19.1.0",
         "react-native": "0.81.5",
@@ -163,13 +179,25 @@
         "typescript": "~5.9.2"
       },
       "private": true
+    },
+    "eas.json": {
+      "cli": {
+        "version": ">= 11.0.0",
+        "appVersionSource": "remote"
+      },
+      "build": {
+        "production": {
+          "autoIncrement": true,
+          "credentialsSource": "local"
+        }
+      }
     }
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.3",
     "@nkzw/create-context-hook": "^1.1.0",
     "@react-native-async-storage/async-storage": "2.2.0",
-    "@rork-ai/toolkit-sdk": "^0.2.51",
+    "@rork-ai/toolkit-sdk": "0.2.54",
     "@stardazed/streams-text-encoding": "^1.0.2",
     "@tanstack/react-query": "^5.83.0",
     "@ungap/structured-clone": "^1.3.0",
@@ -190,7 +218,7 @@
     "expo-symbols": "~1.0.8",
     "expo-system-ui": "~6.0.9",
     "expo-web-browser": "~15.0.10",
-    "lucide-react-native": "^0.475.0",
+    "lucide-react-native": "0.577.0",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-native": "0.81.5",
@@ -208,7 +236,8 @@
       "ios_infoPlist": {
         "NSPhotoLibraryUsageDescription": "Allow $(PRODUCT_NAME) to access your photos",
         "NSCameraUsageDescription": "Allow $(PRODUCT_NAME) to access your camera",
-        "NSMicrophoneUsageDescription": "Allow $(PRODUCT_NAME) to access your microphone"
+        "NSMicrophoneUsageDescription": "Allow $(PRODUCT_NAME) to access your microphone",
+        "ITSAppUsesNonExemptEncryption": false
       }
     }
   ],
